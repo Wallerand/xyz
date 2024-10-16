@@ -50,14 +50,14 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the user's username.
+     * Get the user's username (e.g. user0001).
      */
     protected function username(): Attribute
     {
-        $id = str_pad((string) $this->id, 4, "0", STR_PAD_LEFT);
-
         return Attribute::make(
-            get: fn () => "user{$id}",
+            get: fn () => ($this->exists === true)
+                ? "user" . str_pad((string) $this->id, 4, "0", STR_PAD_LEFT)
+                : trans('auth.missing_user')
         );
     }
 

@@ -17,6 +17,7 @@ return [
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
+    'missing_user' => 'deleted',
     'remaining_codes' => '[0,1] :count code restant|[2,*] :count codes restants',
     'registration_failed' => 'Une erreur s\'est produite lors de votre inscription.',
 
