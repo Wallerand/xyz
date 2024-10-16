@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Services;
 
-use App\Services\CodeGeneratorService;
+use App\Services\CodeService;
 use PHPUnit\Framework\TestCase;
 
 class CodeGeneratorTest extends TestCase
@@ -12,9 +12,9 @@ class CodeGeneratorTest extends TestCase
      */
     public function test_single_code_generator(): void
     {
-        $generator = new CodeGeneratorService;
+        $generator = new CodeService;
 
-        $this->assertIsString($generator->randomCode());
+        $this->assertIsString($generator->random());
     }
 
     /**
@@ -22,7 +22,7 @@ class CodeGeneratorTest extends TestCase
      */
     public function test_multiple_code_generator(): void
     {
-        $generator = new CodeGeneratorService;
+        $generator = new CodeService;
 
         $count  = 10;
         $result = $generator->generate($count);

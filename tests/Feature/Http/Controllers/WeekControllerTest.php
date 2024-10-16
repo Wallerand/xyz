@@ -27,7 +27,9 @@ class WeekControllerTest extends TestCase
         $user = User::factory()->createOne();
 
         $this->actingAs($user)->get(route('app.weeks.index'))
-            ->assertSuccessful();
+            ->assertRedirectToRoute('app.weeks.show', [
+                'week' => date('Y/W') // Current week URI
+            ]);
     }
 
     /**
