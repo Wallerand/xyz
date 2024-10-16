@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/', HomeController::class)->name('app.home');
 
     // Week ranking
-    Route::get('/weeks', [WeekController::class, 'index'])->name('app.weeks.index');
+    Route::get('/weeks', [WeekController::class, 'index'])->name('app.weeks.index'); // Redirect to current week
     Route::get('/weeks/{week:uri}', [WeekController::class, 'show'])->name('app.weeks.show')->where('week', '[0-9]{4}/[0-9]{2}');
     Route::get('/weeks/{week:uri}/tracks/{track}', [TrackController::class, 'show'])->name('app.tracks.show')->where('week', '[0-9]{4}/[0-9]{2}');
     Route::post('/weeks/{week:uri}/tracks/{track}/like', [TrackController::class, 'like'])->name('app.tracks.like')->where('week', '[0-9]{4}/[0-9]{2}');

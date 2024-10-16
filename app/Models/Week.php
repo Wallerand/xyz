@@ -59,11 +59,11 @@ class Week extends Model
     }
 
     /**
-     * Get the week's name (e.g. "year/week_number").
+     * Get the week as DatePeriod.
      */
     public function toPeriod()
     {
-        return CarbonPeriod::create($this->week_starts_at, '1 week', 1);
+        return CarbonPeriod::create($this->week_starts_at, $this->week_ends_at);
     }
 
     /**

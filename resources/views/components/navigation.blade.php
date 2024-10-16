@@ -1,7 +1,7 @@
 <nav class="container-wide">
     <ul>
         <li @class(['current' => request()->routeIs('app.home')])>
-            <a href="{{ route('app.home') }}"><span class="logo"><h1>XYZ</h1></a></span>
+            <a href="{{ route('app.home') }}"><span class="logo"><h1>XYZ</h1></span></a>
         </li>
 
         @auth

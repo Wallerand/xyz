@@ -7,16 +7,12 @@ use App\Models\Week;
 class WeekController extends Controller
 {
     /**
-     * Current week.
+     * Redirect to current week.
      */
     public function index()
     {
-        $week = Week::current();
-
-        return view('app.weeks.show', [
-            'current' => true,
-            'week' => $week->loadCount('tracks'),
-            'tracks' => $week->tracks()->with('user')->withCount('likes')->ranking()->get()
+        return redirect()->route('app.weeks.show', [
+            'week' => Week::current()
         ]);
     }
 
@@ -27,6 +23,7 @@ class WeekController extends Controller
     {
         return view('app.weeks.show', [
             'week' => $week->loadCount('tracks'),
+            'isCurrent' => $week->toPeriod()->contains(now()),
             'tracks' => $week->tracks()->with('user')->withCount('likes')->ranking()->get()
         ]);
     }

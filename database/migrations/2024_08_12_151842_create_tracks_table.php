@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tracks', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Week::class)->constrained('weeks')->onDelete('cascade')->after('id');
+            $table->foreignIdFor(Week::class)->constrained('weeks')->onDelete('cascade');
             $table->foreignIdFor(User::class, 'user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->string('artist');
             $table->string('title');
