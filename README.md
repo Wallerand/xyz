@@ -10,7 +10,7 @@ Pour démarrer le projet, lancer les commandes suivantes :
 
 ```bash
 # Récupération des sources
-$ git clone https://github.com/wallerand/R5A05-projet-xyz.git
+$ git clone https://github.com/wallerand/xyz.git
 
 # Lancement de la stack
 $ docker-compose -p "projet-xyz" up -d
