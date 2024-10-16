@@ -55,7 +55,7 @@ class Player
     /**
      * Get track details for given URL.
      */
-    public function trackDetails(string $url): TrackDetails
+    public function details(string $url): TrackDetails
     {
         return $this->guessFromUrl($url)->resolve($url);
     }
@@ -63,12 +63,12 @@ class Player
     /**
      * Get track embed code for given $player and $trackId, or null.
      */
-    public function trackEmbed(string $player, string $trackId): string|null
+    public function embed(string $player, string $trackId): string|null
     {
-        $player = app(Player::class)->fromName($player);
+        if ($player = app(Player::class)->fromName($player)) {
+            return $player->embed($trackId);
+        }
 
-        return $player
-            ? $player->embed($trackId)
-            : null;
+        return null;
     }
 }

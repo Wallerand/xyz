@@ -6,7 +6,6 @@ use App\Models\Week;
 use App\Models\Track;
 use App\Players\Player;
 use App\Rules\PlayerUrl;
-use App\Jobs\FetchTrackInfo;
 use App\Services\UserService;
 use App\Exceptions\PlayerException;
 use Illuminate\Http\RedirectResponse;
@@ -19,7 +18,7 @@ class TrackController extends Controller
     /**
      * Show given track.
      */
-    public function show(Request $request, Week $week, Track $track): View
+    public function show(Request $request, Week $week, Track $track, Player $player): View
     {
         return view('app.tracks.show', [
             'week' => $week->loadCount('tracks'),
@@ -27,7 +26,7 @@ class TrackController extends Controller
             'tracks_count' => $week->tracks_count,
             'position' => $week->getTrackPosition($track),
             'liked' => $request->user()->likes()->whereTrackId($track->id)->exists(),
-            'embed' => app(Player::class)->trackEmbed($track->player, $track->player_track_id),
+            'embed' => $player->embed($track->player, $track->player_track_id),
         ]);
     }
 
@@ -45,7 +44,7 @@ class TrackController extends Controller
     /**
      * Create a new track.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, Player $player): RedirectResponse
     {
         $this->authorize('create', Track::class);
 
@@ -57,19 +56,30 @@ class TrackController extends Controller
 
         DB::beginTransaction();
 
+        // Set track title, artist and url
         $track = new Track($validated);
-        $track->week()->associate(Week::current());
+
+        // Set track's user + week
         $track->user()->associate($request->user());
-        $track->save();
+        $track->week()->associate(Week::current());
 
         try {
-            dispatch(new FetchTrackInfo($track));
+            // Fetch track detail from provider (YT, SC)
+            $details = $player->details($track->url);
+
+            // Set player_id, track_id and thumbnail_url
+            $track->player = $details->player_id;
+            $track->player_track_id = $details->track_id;
+            $track->player_thumbnail_url = $details->thumbnail_url;
+
+            // Publish track
+            $track->save();
+
+            DB::commit();
         } catch (PlayerException $th) {
             DB::rollBack();
             throw $th;
         }
-
-        DB::commit();
 
         return redirect()->route('app.tracks.show', [
             'week' => $track->week->uri,
@@ -84,7 +94,9 @@ class TrackController extends Controller
     {
         $user = $request->user();
 
-        $track->likes()->toggle([$user->id => ['liked_at' => now()]]);
+        $track->likes()->toggle([
+            $user->id => ['liked_at' => now()]
+        ]);
 
         return redirect()->route('app.tracks.show', [
             'week' => $week->uri,

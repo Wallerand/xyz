@@ -14,7 +14,7 @@ return [
     */
 
     'unsupported_player' => 'Lien d\'écoute non pris en charge.',
-    'unexpected_player_error' => 'Une erreur s\'est produite. Vérifiez le lien et réessayez.',
+    'unexpected_player_error' => 'Une erreur s\'est produite lors de la récupération des informations du titre. Vérifiez le lien et réessayez.',
 
     'accepted' => 'The :attribute field must be accepted.',
     'accepted_if' => 'The :attribute field must be accepted when :other is :value.',
