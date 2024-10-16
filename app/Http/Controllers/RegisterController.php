@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Code;
+use App\Services\CodeService;
 use App\Mail\SendInvitationCodes;
-use App\Services\CodeGeneratorService;
 use App\Exceptions\RegistrationFailedException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -47,7 +47,7 @@ class RegisterController extends Controller
      *
      * @throws RegistrationFailedException
      */
-    public function register(Request $request, Code $code, CodeGeneratorService $codeGenerator): RedirectResponse
+    public function register(Request $request, Code $code, CodeService $codeService): RedirectResponse
     {
         $validated = $request->validate([
             'email' => ['required', 'email', 'unique:users,email'],
@@ -60,14 +60,16 @@ class RegisterController extends Controller
 
         try {
             // Create user
-            $user = User::query()->create($validated);
+            $user = new User($validated);
+            $user->save();
 
-            // Mark code as consumed by $user
-            $code->update(['consumed_at' => now(), 'guest_id' => $user->id]);
+            // Make code as consumed
+            $codeService->markAsConsumed($request->string('code'), $user);
 
-            // Generate user invitation codes
-            $codes = $codeGenerator->generate(config('app.codes_count', 5));
-            $user->codes()->createMany(collect($codes)->map(fn ($code) => compact('code')));
+            // Generate user codes
+            $codes = $user->codes()->saveMany(
+                $codeService->generate(config('app.codes_count'))
+            );
 
             // Send welcome email
             Mail::to($user)->send(new SendInvitationCodes($codes));
@@ -76,7 +78,7 @@ class RegisterController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
 
-            // Rendering of this custom exception is defined in the bootstrap/app.php file.
+            // Rendering of this custom exception is defined within the exception itself
             throw new RegistrationFailedException(previous: $th);
         }
 

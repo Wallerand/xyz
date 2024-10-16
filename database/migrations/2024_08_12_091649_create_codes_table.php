@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class, 'host_id')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignIdFor(User::class, 'guest_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->string('code')->index()->unique();
+            $table->string('code')->unique();
             $table->timestamp('created_at');
             $table->timestamp('consumed_at')->nullable();
         });
