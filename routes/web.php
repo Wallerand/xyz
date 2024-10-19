@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TrackController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Middleware\EnsureValidCodeMiddleware;
 
 // Auth
@@ -33,6 +34,10 @@ Route::middleware('auth')->group(function () {
     // Track
     Route::get('/tracks/create', [TrackController::class, 'create'])->name('app.tracks.create');
     Route::post('/tracks/create', [TrackController::class, 'store'])->name('app.tracks.store');
+
+    // Category
+    Route::get('/categories', [CategoryController::class, 'index'])->name('app.categories.index');
+    Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('app.categories.show');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile.edit');
