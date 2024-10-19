@@ -216,7 +216,8 @@ return [
     'attributes' => [
         'title' => 'titre',
         'artist' => 'artiste',
-        'password' => 'mot de passe'
+        'password' => 'mot de passe',
+        'category_id' => 'catégorie'
     ],
 
 ];
