@@ -24,7 +24,7 @@ class WeekController extends Controller
         return view('app.weeks.show', [
             'week' => $week->loadCount('tracks'),
             'isCurrent' => $week->toPeriod()->contains(now()),
-            'tracks' => $week->tracks()->with('user')->withCount('likes')->ranking()->get()
+            'tracks' => $week->tracks()->with('user', 'category')->withCount('likes')->ranking()->get()
         ]);
     }
 }
