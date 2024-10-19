@@ -698,3 +698,59 @@ ol.chart li .details .metadata-item svg {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
+
+a.link {
+    color: white; 
+    text-decoration: underline;
+    text-decoration-style: dotted;
+}
+
+a.link:hover {
+    text-decoration-style: solid;
+}
+
+select {
+    background-color: var(--input-background);
+    border: 2px solid var(--input-border);
+    color: var(--text-primary);
+    padding: 0.65rem 0.7rem;
+    width: 22rem;
+}
+
+select:focus {
+    border-color: var(--input-border-focused);
+    outline: none;
+}
+
+option {
+    color: var(--text-primary);
+}
+
+option:disabled {
+    color: var(--text-secondary);
+}
+
+.pagination {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.pagination a {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+    color: var(--text-secondary);
+    border-bottom: 2px solid var(--secondary);
+    padding-bottom: 12px;
+}
+
+.pagination a svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.pagination a:hover {
+    color: var(--text-primary);
+    border-color: var(--text-primary);
+}
