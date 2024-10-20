@@ -6,6 +6,11 @@
                 {{ $category->name }} <small>{{ trans_choice('tracks.count', $tracks->total()) }}</small>
             </h1>
 
+            @if ($tracks->isEmpty())
+            <div>
+                <p>Aucune contribution pour cette catégorie.</p>
+            </div>
+            @else
             <ol class="chart">
                 @foreach($tracks as $track)
                 <li>
@@ -43,6 +48,7 @@
             </ol>
 
             {{ $tracks->links('components.pagination') }}
+            @endif
         </section>
 
         <div>

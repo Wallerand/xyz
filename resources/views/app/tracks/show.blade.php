@@ -14,14 +14,14 @@
                 <dt>Titre</dt>
                 <dd>{{ $track->title }}</dd>
 
-                <dt>Contributeur</dt>
-                <dd class="flex-center">
-                    <x-avatar size="medium" :src="$track->user->avatar" /> {{ $track->user->username }}
-                </dd>
-
                 <dt>Catégorie</dt>
                 <dd>
                     <a href="{{ route('app.categories.show', ['category' => $track->category->id]) }}" class="link">{{ $track->category->name }}</a>
+                </dd>
+
+                <dt>Contributeur</dt>
+                <dd class="flex-center">
+                    <x-avatar size="medium" :src="$track->user->avatar" /> {{ $track->user->username }}
                 </dd>
 
                 <dt>Lecteur</dt>
